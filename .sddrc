@@ -1,0 +1,12 @@
+{
+  "project": "redragon-mouse",
+  "version": "2.4.0",
+  "agents": ["gemini"],
+  "telemetry": {
+    "enabled": true,
+    "anonymous": true,
+    "endpoint": "local"
+  },
+  "lang": "pt-BR",
+  "naming_convention": "sequencial"
+}
