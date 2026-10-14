@@ -1,5 +1,8 @@
 //! USB driver implementation for Redragon M709.
 
+pub mod device;
+
+pub use device::M709Device;
 use m709_core::{PRODUCT_ID, VENDOR_ID};
 use thiserror::Error;
 

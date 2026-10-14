@@ -3,24 +3,25 @@
 ## Status
 ```
 Fase 0 — Foundation   [x] done
-Fase 1 — USB Protocol [ ] todo
+Fase 1 — USB Protocol [x] done
+Fase 2 — Profiles     [ ] todo
 ```
 
 ## Features ativas
 | Feature | Branch | Status |
 |---------|--------|--------|
-| feat-01-02-rea-protocol-core | feat/01-redragon-rgb-gui | todo |
+| feat-01-04-profile-persistence | feat/01-redragon-rgb-gui | todo |
 
 ## Próximo passo
-**Iniciar:** feat-01-02-rea-protocol-core (Extração REA e codificação do protocolo M709 em Rust)
+**Iniciar:** feat-01-04-profile-persistence (Persistência TOML e import/export de perfis)
 **Bloqueios:** —
 
 ## Handoff da última sessão
-- Branch `feat/01-redragon-rgb-gui` criada.
-- Workspace Cargo configurado com `m709-core`, `m709-usb`, `m709-cli`.
-- `feat-01-01-foundation-workspace` concluída e validada:
-  - `m709 detect` testado no hardware real com sucesso: mouse M709 [04d9:fc2a] detectado via rusb!
-- Subagente especialista em engenharia reversa extraindo a especificação completa do protocolo do M709.
+- Protocolo M709 codificado em `m709-core` com serialização e parser testados.
+- Driver USB `m709-usb` e CLI `m709-cli` testados e validados no hardware real do usuário:
+  - Leitura completa de estado: `m709 read`
+  - Gravação de LED: `m709 set-led --color "#00FF88" --mode breathing` confirmada pelo hardware.
+- `feat-01-02` e `feat-01-03` finalizadas com sucesso.
 
 ## Última sessão
 > Histórico completo em `progress-log.md`
