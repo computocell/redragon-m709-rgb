@@ -1,0 +1,11 @@
+[package]
+name = "m709-usb"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+m709-core = { path = "../m709-core" }
+rusb = { workspace = true }
+thiserror = { workspace = true }

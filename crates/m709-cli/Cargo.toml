@@ -1,0 +1,16 @@
+[package]
+name = "m709-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "m709"
+path = "src/main.rs"
+
+[dependencies]
+m709-core = { path = "../m709-core" }
+m709-usb = { path = "../m709-usb" }
+clap = { workspace = true }
+anyhow = { workspace = true }
