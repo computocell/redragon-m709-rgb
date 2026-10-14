@@ -73,11 +73,12 @@ pub fn save_to_hardware(state: &SharedState) -> Result<()> {
     let dev = M709Device::open().context("Falha ao abrir USB do mouse")?;
     dev.write_settings(&s.config)
         .context("Falha ao gravar configurações na memória interna")?;
+    let _ = dev.write_profile(s.config.active_profile);
     drop(s);
 
     let mut s = state.borrow_mut();
     s.is_dirty = false;
-    s.status_message = "✓ Configurações gravadas com sucesso no hardware!".to_string();
+    s.status_message = "✓ Configuração gravada e aplicada ao mouse!".to_string();
     Ok(())
 }
 

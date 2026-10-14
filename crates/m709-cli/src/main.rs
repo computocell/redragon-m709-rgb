@@ -196,7 +196,9 @@ fn main() -> Result<()> {
             println!("Gravando nova configuração no hardware...");
             dev.write_settings(&config)
                 .context("Falha ao gravar configurações no hardware")?;
-            println!("✓ Iluminação atualizada no mouse com sucesso!");
+            dev.write_profile(config.active_profile)
+                .context("Falha ao recarregar perfil no hardware")?;
+            println!("✓ Iluminação atualizada e recarregada no mouse com sucesso!");
         }
 
         Commands::Profile { action } => {

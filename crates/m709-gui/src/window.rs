@@ -147,6 +147,8 @@ impl MainWindow {
             let update_ui = update_ui.clone();
 
             Rc::new(move || {
+                let current_tab = stack.visible_child_name();
+
                 // Remove abas antigas
                 while let Some(child) = stack.first_child() {
                     stack.remove(&child);
@@ -163,6 +165,10 @@ impl MainWindow {
 
                 let profiles_tab = build_profiles_tab(state.clone(), update_ui.clone());
                 stack.add_titled(&profiles_tab, Some("profiles"), "Perfis");
+
+                if let Some(tab_name) = current_tab {
+                    stack.set_visible_child_name(&tab_name);
+                }
             })
         };
 

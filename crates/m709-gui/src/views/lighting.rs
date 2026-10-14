@@ -124,6 +124,7 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
 
                 hex_entry_clone.set_text(&hex_clone);
                 update_color_preview(&color_preview_clone, &hex_clone);
+                let _ = save_to_hardware(&s_clone);
                 on_change_clone();
             }
         });
@@ -218,6 +219,7 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
             s.config.profiles[p].lightmode = modes[idx].1;
             s.is_dirty = true;
             drop(s);
+            let _ = save_to_hardware(&s_clone);
             on_change_clone();
         }
     });
@@ -227,14 +229,17 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
     let on_change_clone = on_change.clone();
     hex_entry.connect_changed(move |entry| {
         let text = entry.text().to_string();
-        if let Some(rgb) = RgbColor::from_hex(&text) {
-            let mut s = s_clone.borrow_mut();
-            let p = s.config.active_profile.index();
-            s.config.profiles[p].color = rgb;
-            s.is_dirty = true;
-            drop(s);
-            update_color_preview(&color_prev_clone, &text);
-            on_change_clone();
+        if text.len() == 7 && text.starts_with('#') {
+            if let Some(rgb) = RgbColor::from_hex(&text) {
+                let mut s = s_clone.borrow_mut();
+                let p = s.config.active_profile.index();
+                s.config.profiles[p].color = rgb;
+                s.is_dirty = true;
+                drop(s);
+                update_color_preview(&color_prev_clone, &text);
+                let _ = save_to_hardware(&s_clone);
+                on_change_clone();
+            }
         }
     });
 
@@ -247,6 +252,7 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
         s.config.profiles[p].brightness = val.clamp(1, 3);
         s.is_dirty = true;
         drop(s);
+        let _ = save_to_hardware(&s_clone);
         on_change_clone();
     });
 
@@ -259,6 +265,7 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
         s.config.profiles[p].speed = val.clamp(1, 8);
         s.is_dirty = true;
         drop(s);
+        let _ = save_to_hardware(&s_clone);
         on_change_clone();
     });
 
