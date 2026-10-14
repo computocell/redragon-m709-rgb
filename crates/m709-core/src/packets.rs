@@ -123,17 +123,32 @@ pub fn parse_settings(
             p.dpi_stages[lvl] = DpiStage { enabled, raw, dpi };
         }
 
-        // Keymaps from in3
-        for btn in 0..NUM_BUTTONS {
-            let row = btn + (8 * i);
+        // Keymaps from in3: each profile has 20 registers in in3.
+        // The registers for the physical buttons are:
+        // Left: 0, Right: 1, Middle: 2, DPI: 4, Forward: 6, Backward: 7.
+        // ScrollUp (reg 0xd2) and ScrollDown (reg 0xd6) are not read registers;
+        // they must remain ScrollUp and ScrollDown by default.
+        let prof_base = 20 * i;
+        let btn_indices = [
+            prof_base + 0, // Left
+            prof_base + 1, // Right
+            prof_base + 2, // Middle
+            prof_base + 6, // Forward
+            prof_base + 7, // Backward
+            prof_base + 4, // DPI
+        ];
+
+        for (btn_idx, &row) in btn_indices.iter().enumerate() {
             let bytes = [
                 in3[row][8],
                 in3[row][9],
                 in3[row][10],
                 in3[row][11],
             ];
-            p.keymap[btn] = ButtonAction::from_bytes(bytes);
+            p.keymap[btn_idx] = ButtonAction::from_bytes(bytes);
         }
+        p.keymap[6] = ButtonAction::ScrollUp;
+        p.keymap[7] = ButtonAction::ScrollDown;
     }
 
     config

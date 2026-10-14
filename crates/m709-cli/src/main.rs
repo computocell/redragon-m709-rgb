@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
 use m709_core::{
-    LightMode, MODEL_NAME, PRODUCT_ID, Profile, ProfileManager, RgbColor, VENDOR_ID,
+    ButtonAction, LightMode, MODEL_NAME, PRODUCT_ID, Profile, ProfileManager, RgbColor, VENDOR_ID,
 };
 use m709_usb::{is_device_connected, M709Device};
 
@@ -52,6 +52,9 @@ enum Commands {
         #[command(subcommand)]
         action: ProfileCommands,
     },
+
+    /// Restore standard factory button mappings (fixing scroll wheel and buttons)
+    RestoreButtons,
 }
 
 #[derive(Subcommand)]
@@ -128,6 +131,11 @@ fn main() -> Result<()> {
                     if s_idx < 4 {
                         print!("| ");
                     }
+                }
+                println!();
+                print!("   Botões: ");
+                for (b_idx, action) in p.keymap.iter().enumerate() {
+                    print!("{}: {:?} ", b_idx, action);
                 }
                 println!();
             }
@@ -243,6 +251,30 @@ fn main() -> Result<()> {
                     println!("✓ Configuração completa restaurada no mouse com sucesso!");
                 }
             }
+        }
+
+        Commands::RestoreButtons => {
+            println!("Conectando ao {}...", MODEL_NAME);
+            let dev = M709Device::open().context("Falha ao abrir dispositivo USB M709")?;
+            println!("Lendo configuração atual do mouse...");
+            let mut config = dev.read_settings().context("Falha ao ler dados atuais")?;
+            println!("Restaurando mapeamento padrão de botões e scroll em todos os perfis...");
+            for p in &mut config.profiles {
+                p.keymap = [
+                    ButtonAction::LeftClick,
+                    ButtonAction::RightClick,
+                    ButtonAction::MiddleClick,
+                    ButtonAction::Forward,
+                    ButtonAction::Backward,
+                    ButtonAction::DpiCycle,
+                    ButtonAction::ScrollUp,
+                    ButtonAction::ScrollDown,
+                ];
+            }
+            println!("Gravando no mouse...");
+            dev.write_settings(&config)
+                .context("Falha ao gravar botões no hardware")?;
+            println!("✓ Mapeamento de botões restaurado com sucesso! O scroll do mouse voltou a funcionar.");
         }
     }
 
