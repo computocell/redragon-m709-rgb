@@ -123,6 +123,10 @@ pub fn build_dpi_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
     let rate_names: Vec<&str> = rates.iter().map(|(n, _)| *n).collect();
     let rate_strings = StringList::new(&rate_names);
     let rate_dropdown = DropDown::new(Some(rate_strings), None::<gtk::Expression>);
+    let factory = crate::views::create_dropdown_factory();
+    let list_factory = crate::views::create_dropdown_factory();
+    rate_dropdown.set_factory(Some(&factory));
+    rate_dropdown.set_list_factory(Some(&list_factory));
     rate_dropdown.set_width_request(260);
 
     // Set initial rate

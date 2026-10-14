@@ -13,7 +13,7 @@ window {
     font-size: 14px;
 }
 
-label {
+label, inscription {
     color: #ffffff;
 }
 
@@ -39,7 +39,7 @@ headerbar {
     border-bottom: 2px solid #2d3040;
 }
 
-headerbar label {
+headerbar label, headerbar inscription {
     color: #ffffff;
     font-weight: 600;
 }
@@ -105,36 +105,34 @@ dropdown {
     border: 1px solid #454962;
     border-radius: 8px;
     padding: 0;
-    min-width: 220px;
+    min-width: 240px;
 }
 
-dropdown > button.combo,
 dropdown > button {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    color: #ffffff !important;
-    padding: 8px 14px !important;
+    background: transparent;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: #ffffff;
+    padding: 8px 14px;
     min-height: 38px;
 }
 
 dropdown > button:hover {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
-dropdown > button label,
-dropdown > button.combo label,
-dropdown label {
-    color: #ffffff !important;
+dropdown label,
+dropdown inscription,
+dropdown .dropdown-label {
+    color: #ffffff;
+    font-size: 14px;
     font-weight: 500;
 }
 
 dropdown arrow,
 dropdown image {
-    color: #ffffff !important;
-    -gtk-icon-palette: default;
+    color: #ffffff;
 }
 
 entry {
@@ -150,7 +148,7 @@ checkbutton {
     color: #ffffff;
 }
 
-checkbutton label {
+checkbutton label, checkbutton inscription {
     color: #ffffff;
     font-weight: 600;
 }
@@ -181,108 +179,78 @@ checkbutton label {
     font-weight: 600;
 }
 
-popover,
-popover.menu {
-    background: transparent !important;
-    background-color: transparent !important;
-    padding: 0 !important;
+popover {
+    background-color: transparent;
+    padding: 0;
 }
 
-popover > arrow,
-popover.menu > arrow {
-    background-color: #1e202c !important;
-    border: 1px solid #454962 !important;
+popover > arrow {
+    background-color: #1e202c;
+    border: 1px solid #454962;
 }
 
-popover > contents,
-popover.menu > contents {
-    background-color: #1e202c !important;
-    color: #ffffff !important;
-    border: 1px solid #454962 !important;
-    border-radius: 8px !important;
-    padding: 6px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+popover > contents {
+    background-color: #1e202c;
+    color: #ffffff;
+    border: 1px solid #454962;
+    border-radius: 8px;
+    padding: 6px;
 }
 
 popover scrolledwindow,
-popover.menu scrolledwindow,
-popover viewport,
-popover.menu viewport {
-    background-color: transparent !important;
+popover viewport {
+    background-color: transparent;
 }
 
-popover listview,
-popover.menu listview {
-    background-color: #1e202c !important;
-    color: #ffffff !important;
+popover listview {
+    background-color: #1e202c;
+    color: #ffffff;
 }
 
-popover listview row,
-popover.menu listview row {
-    background-color: transparent !important;
-    color: #ffffff !important;
-    padding: 8px 14px !important;
-    border-radius: 6px !important;
-    margin: 2px !important;
-    font-size: 0.95rem !important;
+popover listview row {
+    background-color: transparent;
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin: 2px;
+    font-size: 0.95rem;
     min-height: 32px;
 }
 
 popover listview row label,
-popover.menu listview row label,
-popover listview row cell,
-popover.menu listview row cell {
-    color: #ffffff !important;
-    background-color: transparent !important;
+popover listview row inscription,
+popover listview row .dropdown-label {
+    color: #ffffff;
+    background-color: transparent;
 }
 
-popover listview row:hover,
-popover.menu listview row:hover {
-    background-color: #31354c !important;
-    color: #ffffff !important;
+popover listview row:hover {
+    background-color: #31354c;
+    color: #ffffff;
 }
 
 popover listview row:hover label,
-popover.menu listview row:hover label {
-    color: #ffffff !important;
+popover listview row:hover inscription,
+popover listview row:hover .dropdown-label {
+    color: #ffffff;
 }
 
-popover listview row:selected,
-popover.menu listview row:selected {
-    background-color: #2563eb !important;
-    color: #ffffff !important;
+popover listview row:selected {
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
 popover listview row:selected label,
-popover.menu listview row:selected label {
-    color: #ffffff !important;
-    font-weight: bold !important;
+popover listview row:selected inscription,
+popover listview row:selected .dropdown-label {
+    color: #ffffff;
+    font-weight: bold;
 }
 
-popover listview row:selected:hover,
-popover.menu listview row:selected:hover {
-    background-color: #1d4ed8 !important;
-    color: #ffffff !important;
-}
-
-popover listview row:selected:hover label,
-popover.menu listview row:selected:hover label {
-    color: #ffffff !important;
-}
-
-popover entry,
-popover.menu entry {
-    background-color: #2b2e3f !important;
-    color: #ffffff !important;
-    border: 1px solid #454962 !important;
-    border-radius: 6px !important;
-    padding: 6px 10px !important;
-    margin-bottom: 6px !important;
-}
-
-popover entry label,
-popover entry text {
-    color: #ffffff !important;
+.dropdown-label {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 scale trough {
@@ -336,6 +304,7 @@ pub fn build_application() -> Application {
     });
 
     app.connect_activate(|app| {
+        load_css();
         let state = new_shared_state();
         let main_window = MainWindow::new(app, state);
         main_window.present();
@@ -349,6 +318,9 @@ fn load_css() {
     provider.load_from_string(APP_CSS);
 
     if let Some(display) = Display::default() {
+        let settings = gtk::Settings::for_display(&display);
+        settings.set_gtk_application_prefer_dark_theme(true);
+
         gtk::style_context_add_provider_for_display(
             &display,
             &provider,

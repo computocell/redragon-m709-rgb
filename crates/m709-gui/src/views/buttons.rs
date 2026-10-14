@@ -58,6 +58,10 @@ pub fn build_buttons_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
 
         let str_list = StringList::new(&action_names);
         let dropdown = DropDown::new(Some(str_list), None::<gtk::Expression>);
+        let factory = crate::views::create_dropdown_factory();
+        let list_factory = crate::views::create_dropdown_factory();
+        dropdown.set_factory(Some(&factory));
+        dropdown.set_list_factory(Some(&list_factory));
         dropdown.set_width_request(220);
 
         // Set initial selected action

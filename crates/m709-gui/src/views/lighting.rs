@@ -57,6 +57,10 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
     let mode_names: Vec<&str> = modes.iter().map(|(n, _)| *n).collect();
     let mode_strings = StringList::new(&mode_names);
     let mode_dropdown = DropDown::new(Some(mode_strings), None::<gtk::Expression>);
+    let factory = crate::views::create_dropdown_factory();
+    let list_factory = crate::views::create_dropdown_factory();
+    mode_dropdown.set_factory(Some(&factory));
+    mode_dropdown.set_list_factory(Some(&list_factory));
     mode_dropdown.set_width_request(240);
     mode_row.append(&mode_dropdown);
     settings_box.append(&mode_row);
