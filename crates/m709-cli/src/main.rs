@@ -1,7 +1,7 @@
 use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
 use m709_core::{
-    LightMode, MODEL_NAME, PRODUCT_ID, Profile, RgbColor, VENDOR_ID,
+    LightMode, MODEL_NAME, PRODUCT_ID, Profile, ProfileManager, RgbColor, VENDOR_ID,
 };
 use m709_usb::{is_device_connected, M709Device};
 
@@ -46,6 +46,39 @@ enum Commands {
         #[arg(short, long, value_parser = clap::value_parser!(u8).range(1..=8))]
         speed: Option<u8>,
     },
+
+    /// Manage saved profiles in ~/.config/redragon-mouse/
+    Profile {
+        #[command(subcommand)]
+        action: ProfileCommands,
+    },
+}
+
+#[derive(Subcommand)]
+enum ProfileCommands {
+    /// List all saved local profiles
+    List,
+
+    /// Save the mouse's active profile to a local TOML file
+    Save {
+        /// Profile name
+        name: String,
+        /// Optional description
+        #[arg(short, long)]
+        description: Option<String>,
+    },
+
+    /// Apply a saved local TOML profile to the mouse's active profile
+    Apply {
+        /// Profile name
+        name: String,
+    },
+
+    /// Backup entire mouse hardware memory (all 5 profiles) to local file
+    Backup,
+
+    /// Restore entire mouse hardware memory from local backup
+    Restore,
 }
 
 fn main() -> Result<()> {
@@ -72,7 +105,10 @@ fn main() -> Result<()> {
 
             println!("==================================================");
             println!(" Dispositivo: {}", MODEL_NAME);
-            println!(" Perfil Ativo no Hardware: Perfil {}", config.active_profile.display_number());
+            println!(
+                " Perfil Ativo no Hardware: Perfil {}",
+                config.active_profile.display_number()
+            );
             println!("==================================================");
 
             for (idx, p) in config.profiles.iter().enumerate() {
@@ -132,7 +168,10 @@ fn main() -> Result<()> {
                     config.profiles[active_idx].lightmode = lm;
                     println!("- Modo definido para: {:?}", lm);
                 } else {
-                    bail!("Modo de luz desconhecido: {}. Modos: static, breathing, rainbow, wave, etc.", m);
+                    bail!(
+                        "Modo de luz desconhecido: {}. Modos: static, breathing, rainbow, wave, etc.",
+                        m
+                    );
                 }
             }
 
@@ -150,6 +189,60 @@ fn main() -> Result<()> {
             dev.write_settings(&config)
                 .context("Falha ao gravar configurações no hardware")?;
             println!("✓ Iluminação atualizada no mouse com sucesso!");
+        }
+
+        Commands::Profile { action } => {
+            let pm = ProfileManager::new().context("Falha ao inicializar gerenciador de perfis")?;
+
+            match action {
+                ProfileCommands::List => {
+                    let profiles = pm.list_profiles()?;
+                    println!("Perfis salvos em {}:", pm.dir().display());
+                    if profiles.is_empty() {
+                        println!("  (Nenhum perfil salvo ainda)");
+                    } else {
+                        for p in profiles {
+                            println!("  - {}", p);
+                        }
+                    }
+                }
+
+                ProfileCommands::Save { name, description } => {
+                    let dev = M709Device::open().context("Falha ao abrir dispositivo USB M709")?;
+                    let config = dev.read_settings().context("Falha ao ler dados do mouse")?;
+                    let active = &config.profiles[config.active_profile.index()];
+
+                    let path = pm.save_profile(&name, description.as_deref(), active)?;
+                    println!("✓ Perfil salvo com sucesso em: {}", path.display());
+                }
+
+                ProfileCommands::Apply { name } => {
+                    let loaded = pm.load_profile(&name)?;
+                    let dev = M709Device::open().context("Falha ao abrir dispositivo USB M709")?;
+                    let mut config = dev.read_settings().context("Falha ao ler dados do mouse")?;
+                    let active_idx = config.active_profile.index();
+                    config.profiles[active_idx] = loaded;
+
+                    dev.write_settings(&config)
+                        .context("Falha ao aplicar perfil no mouse")?;
+                    println!("✓ Perfil '{}' aplicado com sucesso ao hardware!", name);
+                }
+
+                ProfileCommands::Backup => {
+                    let dev = M709Device::open().context("Falha ao abrir dispositivo USB M709")?;
+                    let config = dev.read_settings().context("Falha ao ler dados do mouse")?;
+                    let path = pm.save_full_backup(&config)?;
+                    println!("✓ Backup completo gravado em: {}", path.display());
+                }
+
+                ProfileCommands::Restore => {
+                    let config = pm.load_full_backup()?;
+                    let dev = M709Device::open().context("Falha ao abrir dispositivo USB M709")?;
+                    dev.write_settings(&config)
+                        .context("Falha ao restaurar configurações")?;
+                    println!("✓ Configuração completa restaurada no mouse com sucesso!");
+                }
+            }
         }
     }
 

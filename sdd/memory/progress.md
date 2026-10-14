@@ -4,24 +4,23 @@
 ```
 Fase 0 — Foundation   [x] done
 Fase 1 — USB Protocol [x] done
-Fase 2 — Profiles     [ ] todo
+Fase 2 — Profiles     [x] done
+Fase 3 — Desktop GUI  [ ] todo
 ```
 
 ## Features ativas
 | Feature | Branch | Status |
 |---------|--------|--------|
-| feat-01-04-profile-persistence | feat/01-redragon-rgb-gui | todo |
+| feat-01-05-gtk4-gui-lighting | feat/01-redragon-rgb-gui | todo |
 
 ## Próximo passo
-**Iniciar:** feat-01-04-profile-persistence (Persistência TOML e import/export de perfis)
+**Iniciar:** feat-01-05-gtk4-gui-lighting (Interface Gráfica GTK4 para controle de iluminação LED)
 **Bloqueios:** —
 
 ## Handoff da última sessão
-- Protocolo M709 codificado em `m709-core` com serialização e parser testados.
-- Driver USB `m709-usb` e CLI `m709-cli` testados e validados no hardware real do usuário:
-  - Leitura completa de estado: `m709 read`
-  - Gravação de LED: `m709 set-led --color "#00FF88" --mode breathing` confirmada pelo hardware.
-- `feat-01-02` e `feat-01-03` finalizadas com sucesso.
+- `feat-01-04` concluída: gerenciamento de perfis TOML implementado em `m709-core` e CLI `m709 profile (list/save/apply/backup/restore)`.
+- Testado e validado salvamento e leitura local de perfis.
+- Próxima etapa: desenvolvimento da GUI desktop com GTK4 (`crates/m709-gui`).
 
 ## Última sessão
 > Histórico completo em `progress-log.md`

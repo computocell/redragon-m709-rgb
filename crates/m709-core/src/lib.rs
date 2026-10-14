@@ -2,10 +2,12 @@
 
 pub mod constants;
 pub mod packets;
+pub mod profile;
 pub mod types;
 
 pub use constants::*;
 pub use packets::*;
+pub use profile::*;
 pub use types::*;
 
 pub const VENDOR_ID: u16 = 0x04D9;
