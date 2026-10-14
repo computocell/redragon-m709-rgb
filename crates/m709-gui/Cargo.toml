@@ -1,0 +1,12 @@
+[package]
+name = "m709-gui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+m709-core = { path = "../m709-core" }
+m709-usb = { path = "../m709-usb" }
+gtk4 = { workspace = true, features = ["v4_14"] }
+anyhow = { workspace = true }

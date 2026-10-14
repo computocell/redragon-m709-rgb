@@ -4,7 +4,7 @@ members = [
     "crates/m709-core",
     "crates/m709-usb",
     "crates/m709-cli",
-    # "crates/m709-gui", # Descomentar após instalar libgtk-4-dev
+    "crates/m709-gui",
 ]
 
 [workspace.package]
@@ -21,3 +21,5 @@ rusb = "0.9"
 clap = { version = "4.5", features = ["derive"] }
 thiserror = "2.0"
 anyhow = "1.0"
+gtk4 = "0.9"
+
