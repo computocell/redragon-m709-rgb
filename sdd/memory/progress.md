@@ -20,8 +20,8 @@ Fase 3 — Desktop GUI  [x] done
 
 ## Handoff da última sessão
 - `feat-01-05` e `feat-01-06` concluídas: GUI Desktop GTK4 (`m709-gui`) implementada.
-- Corrigido bug crítico de upstream no mapeamento de registradores de botões e scroll wheel.
-- Todos os testes de unidade passaram. Binário executável pronto em `target/debug/m709-gui`.
+- Corrigido contraste e visual de DropDowns/Popovers (`STYLE_PROVIDER_PRIORITY_USER`).
+- Todos os testes passaram. Binário atualizado em `target/debug/m709-gui`.
 
 ## Última sessão
 > Histórico completo em `progress-log.md`
