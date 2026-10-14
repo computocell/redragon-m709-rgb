@@ -15,13 +15,13 @@ Fase 3 — Desktop GUI  [x] done
 | feat-01-06-gtk4-gui-dpi-buttons | feat/01-redragon-rgb-gui | done |
 
 ## Próximo passo
-**Concluído:** Aplicação desktop GTK4 `m709-gui` finalizada com 4 abas (Iluminação, DPI, Botões, Perfis).
+**Concluído:** Todas as etapas da feature `feat-01-redragon-rgb-gui` finalizadas.
 **Bloqueios:** —
 
 ## Handoff da última sessão
-- `feat-01-05` e `feat-01-06` concluídas: GUI Desktop GTK4 (`m709-gui`) implementada.
-- Corrigido contraste e visual de DropDowns/Popovers (`STYLE_PROVIDER_PRIORITY_USER`).
-- Todos os testes passaram. Binário atualizado em `target/debug/m709-gui`.
+- Todas as subfeatures concluídas: driver USB, core codec, CLI e GUI GTK4 `m709-gui`.
+- Release notes v0.1.0 documentadas em `sdd/releases/history.md`.
+- Pronto para merge em `main` e publicação no GitHub.
 
 ## Última sessão
 > Histórico completo em `progress-log.md`
