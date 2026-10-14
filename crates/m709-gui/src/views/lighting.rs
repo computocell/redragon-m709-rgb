@@ -57,6 +57,7 @@ pub fn build_lighting_tab(state: SharedState, on_change: Rc<dyn Fn()>) -> Box {
     let mode_names: Vec<&str> = modes.iter().map(|(n, _)| *n).collect();
     let mode_strings = StringList::new(&mode_names);
     let mode_dropdown = DropDown::new(Some(mode_strings), None::<gtk::Expression>);
+    mode_dropdown.set_width_request(240);
     mode_row.append(&mode_dropdown);
     settings_box.append(&mode_row);
 
@@ -284,7 +285,7 @@ fn update_color_preview(_widget: &Label, hex: &str) {
         gtk::style_context_add_provider_for_display(
             &display,
             &provider,
-            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            gtk::STYLE_PROVIDER_PRIORITY_USER,
         );
     }
 }

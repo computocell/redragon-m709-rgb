@@ -1,7 +1,7 @@
 use gtk4 as gtk;
 use gtk::gdk::Display;
 use gtk::prelude::*;
-use gtk::{Application, CssProvider, STYLE_PROVIDER_PRIORITY_APPLICATION};
+use gtk::{Application, CssProvider, STYLE_PROVIDER_PRIORITY_USER};
 
 use crate::state::new_shared_state;
 use crate::window::MainWindow;
@@ -104,12 +104,37 @@ dropdown {
     color: #ffffff;
     border: 1px solid #454962;
     border-radius: 8px;
-    padding: 6px 12px;
+    padding: 0;
+    min-width: 220px;
 }
 
+dropdown > button.combo,
 dropdown > button {
-    color: #ffffff;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    padding: 8px 14px !important;
+    min-height: 38px;
+}
+
+dropdown > button:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+dropdown > button label,
+dropdown > button.combo label,
+dropdown label {
+    color: #ffffff !important;
     font-weight: 500;
+}
+
+dropdown arrow,
+dropdown image {
+    color: #ffffff !important;
+    -gtk-icon-palette: default;
 }
 
 entry {
@@ -156,22 +181,108 @@ checkbutton label {
     font-weight: 600;
 }
 
-popover {
-    background-color: #222430;
-    color: #ffffff;
-    border: 1px solid #454962;
-    border-radius: 8px;
+popover,
+popover.menu {
+    background: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
 }
 
-popover listview row {
-    color: #ffffff;
-    padding: 8px 12px;
-    font-size: 0.95rem;
+popover > arrow,
+popover.menu > arrow {
+    background-color: #1e202c !important;
+    border: 1px solid #454962 !important;
 }
 
-popover listview row:selected {
-    background-color: #2563eb;
-    color: #ffffff;
+popover > contents,
+popover.menu > contents {
+    background-color: #1e202c !important;
+    color: #ffffff !important;
+    border: 1px solid #454962 !important;
+    border-radius: 8px !important;
+    padding: 6px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+}
+
+popover scrolledwindow,
+popover.menu scrolledwindow,
+popover viewport,
+popover.menu viewport {
+    background-color: transparent !important;
+}
+
+popover listview,
+popover.menu listview {
+    background-color: #1e202c !important;
+    color: #ffffff !important;
+}
+
+popover listview row,
+popover.menu listview row {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    margin: 2px !important;
+    font-size: 0.95rem !important;
+    min-height: 32px;
+}
+
+popover listview row label,
+popover.menu listview row label,
+popover listview row cell,
+popover.menu listview row cell {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+popover listview row:hover,
+popover.menu listview row:hover {
+    background-color: #31354c !important;
+    color: #ffffff !important;
+}
+
+popover listview row:hover label,
+popover.menu listview row:hover label {
+    color: #ffffff !important;
+}
+
+popover listview row:selected,
+popover.menu listview row:selected {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+popover listview row:selected label,
+popover.menu listview row:selected label {
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+popover listview row:selected:hover,
+popover.menu listview row:selected:hover {
+    background-color: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+popover listview row:selected:hover label,
+popover.menu listview row:selected:hover label {
+    color: #ffffff !important;
+}
+
+popover entry,
+popover.menu entry {
+    background-color: #2b2e3f !important;
+    color: #ffffff !important;
+    border: 1px solid #454962 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    margin-bottom: 6px !important;
+}
+
+popover entry label,
+popover entry text {
+    color: #ffffff !important;
 }
 
 scale trough {
@@ -241,7 +352,7 @@ fn load_css() {
         gtk::style_context_add_provider_for_display(
             &display,
             &provider,
-            STYLE_PROVIDER_PRIORITY_APPLICATION,
+            STYLE_PROVIDER_PRIORITY_USER,
         );
     }
 }
