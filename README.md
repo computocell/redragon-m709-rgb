@@ -46,23 +46,59 @@ Painel de controle nativo em **Rust** e **GTK4** para o mouse gamer **Redragon M
 
 ---
 
-## 🚀 Instalação e Requisitos
+## 🚀 Manual de Instalação
 
-### Pré-requisitos (Debian / Ubuntu / Zorin OS / Pop!_OS):
+### Opção 1: Instalação via Pacote `.deb` (Recomendado)
+
+O pacote `.deb` já configura automaticamente os executáveis no sistema (`/usr/bin`), o ícone e atalho no menu de aplicativos (`.desktop`) e as regras de permissão USB (`udev`):
+
+1. Baixe o pacote `redragon-m709-rgb_0.1.0_amd64.deb` da página de [Releases](https://github.com/computocell/redragon-m709-rgb/releases).
+2. Instale usando o `apt` no terminal:
+   ```bash
+   sudo apt install ./redragon-m709-rgb_0.1.0_amd64.deb
+   ```
+3. Pronto! Abra o aplicativo procurando por **Redragon M709 RGB** no menu de programas ou execute `m709-gui` no terminal.
+
+---
+
+### Opção 2: Compilação a partir do Código-Fonte (Rust / Cargo)
+
+Caso queira compilar manualmente no Linux:
+
+1. Instale as dependências de compilação (Debian, Ubuntu, Zorin OS, Pop!_OS, Linux Mint):
+   ```bash
+   sudo apt update
+   sudo apt install -y build-essential pkg-config libusb-1.0-0-dev libgtk-4-dev
+   ```
+
+2. Instale o Rust (se ainda não possuir):
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   source "$HOME/.cargo/env"
+   ```
+
+3. Configure as permissões USB do mouse:
+   ```bash
+   sudo cp 99-redragon-m709.rules /etc/udev/rules.d/
+   sudo udevadm control --reload-rules && sudo udevadm trigger
+   ```
+
+4. Compile os binários otimizados:
+   ```bash
+   cargo build --release
+   ```
+
+---
+
+### 📦 Como Gerar o Pacote `.deb` Localmente
+
+Para empacotar uma nova versão do `.deb` em sua máquina:
 
 ```bash
-sudo apt update
-sudo apt install -y build-essential pkg-config libusb-1.0-0-dev libgtk-4-dev
+./packaging/build-deb.sh
 ```
 
-### Permissões USB (udev):
-
-Para acessar o mouse sem precisar rodar comandos como `sudo`:
-
-```bash
-sudo cp 99-redragon-m709.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules && sudo udevadm trigger
-```
+O arquivo gerado `redragon-m709-rgb_0.1.0_amd64.deb` estará pronto na raiz do projeto.
 
 ---
 

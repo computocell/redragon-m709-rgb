@@ -3,6 +3,7 @@
 **/*.rs.bk
 Cargo.lock
 /.config/
+*.deb
 
 # IDE / Editors
 .vscode/

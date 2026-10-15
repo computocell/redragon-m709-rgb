@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Redragon M709 RGB
+GenericName=Mouse Gaming Control Panel
+Comment=Controle de iluminação RGB, DPI e botões para o mouse Redragon M709
+Exec=m709-gui
+Icon=redragon-m709
+Terminal=false
+Type=Application
+Categories=Settings;HardwareSettings;Utility;
+Keywords=redragon;mouse;rgb;dpi;gaming;m709;ranger;
+StartupNotify=true
+StartupWMClass=com.redragon.mouse.m709
