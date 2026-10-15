@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="0.1.0"
+# Determine package version:
+# 1. From VERSION environment variable
+# 2. Or from GITHUB_REF_NAME (e.g. tag v0.2.0 -> 0.2.0)
+# 3. Or from root Cargo.toml
+if [[ -n "${VERSION:-}" ]]; then
+    PKG_VERSION="${VERSION#v}"
+elif [[ -n "${GITHUB_REF_NAME:-}" ]]; then
+    PKG_VERSION="${GITHUB_REF_NAME#v}"
+else
+    PKG_VERSION=$(grep -m1 '^version = ' Cargo.toml | cut -d'"' -f2 || echo "0.1.0")
+fi
+
+VERSION="${PKG_VERSION}"
 ARCH="amd64"
 PKG_NAME="redragon-m709-rgb"
 PKG_FULL="${PKG_NAME}_${VERSION}_${ARCH}"
